@@ -20,10 +20,16 @@ import logging
 from copy import copy
 from datetime import datetime
 
+#JN this is nasty...
+#from signal import SIGINT
+
 from wa.framework import pluginloader, signal, instrument
 from wa.framework.configuration.core import Status
 from wa.utils.log import indentcontext
 from wa.framework.run import JobState
+
+#JN hack
+import time
 
 
 class Job(object):
@@ -141,12 +147,30 @@ class Job(object):
     def run(self, context):
         self.logger.info('Running job {}'.format(self))
         with indentcontext():
-            with signal.wrap('WORKLOAD_EXECUTION', self, context):
-                start_time = datetime.utcnow()
-                try:
-                    self.workload.run(context)
-                finally:
-                    self.run_time = datetime.utcnow() - start_time
+            #self.logger.info('JN indent context')
+            start_time = datetime.utcnow()
+            #time.sleep(5)
+            #self.logger.info('JN exit idle with CTRL+C')
+            #signal.CTRLC() # not needed finally
+            #self.logger.info('JN CTRL+C performed')
+            #below OK with probe switch----
+            try:
+                self.workload.run(context)
+            finally:
+                self.run_time = datetime.utcnow() - start_time
+            self.run_time = datetime.utcnow() - start_time
+            #-------------------------------
+            #with signal.wrap('WORKLOAD_EXECUTION', self, context):
+            #    self.logger.info('JN sigwrap')
+                #JN bypass
+            #    start_time = datetime.utcnow()
+                #JN bypass
+            #    try:
+            #        self.workload.run(context)
+            #    finally:
+            #        self.run_time = datetime.utcnow() - start_time
+                #time.sleep(10)
+                #self.run_time = datetime.utcnow() - start_time
 
     def process_output(self, context):
         if not context.tm.is_responsive:

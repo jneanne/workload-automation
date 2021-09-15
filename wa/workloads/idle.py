@@ -63,20 +63,24 @@ class IdleWorkload(Workload):
 
     def setup(self, context):
         if self.target.os == 'android':
-            self.old_screen_state = self.target.is_screen_on()
-            self.target.ensure_screen_is_on()
-            self.target.homescreen()
-            if self.screen_off:
-                self.target.ensure_screen_is_off()
+            #JN put troubles
+            #self.old_screen_state = self.target.is_screen_on()
+            #self.target.ensure_screen_is_on()
+            #self.target.homescreen()
+            #if self.screen_off:
+            #    self.target.ensure_screen_is_off()
+            print('bypass screen commands')
 
     def run(self, context):
         self.logger.debug('idling...')
         if self.stop_android:
             timeout = self.duration + 10
-            self.target.execute('stop && sleep {} && start'.format(self.duration),
-                                timeout=timeout, as_root=True)
-        else:
-            self.target.sleep(self.duration)
+            #JN put troubles
+            #self.target.execute('stop && sleep {} && start'.format(self.duration),
+            #                    timeout=timeout, as_root=True)
+        #else:
+            #JN put troubles
+            #self.target.sleep(self.duration)
 
     def teardown(self, context):
         if self.stop_android:

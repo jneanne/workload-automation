@@ -29,6 +29,8 @@ import wrapt
 
 from wa.utils.types import prioritylist, enum
 
+#JN this is nasty
+import signal
 
 logger = logging.getLogger('signal')
 
@@ -320,10 +322,13 @@ def wrap(signal_name, sender=dispatcher.Anonymous, *args, **kwargs):  # pylint: 
     except KeyError:
         raise ValueError('Invalid wrapped signal name: {}'.format(signal_name))
     try:
+        #print("JN send func before")
         send_func(before_signal, sender, *args, **kwargs)
         yield
+        #print("JN send func yield")
         send_func(success_signal, sender, *args, **kwargs)
     finally:
+        #print("JN finally")
         _, exc, _ = sys.exc_info()
         if exc:
             log_error_func(exc)
@@ -341,3 +346,6 @@ def wrapped(signal_name, sender=dispatcher.Anonymous, safe=False):
         return signal_wrapper(*args, **kwargs)
 
     return signal_wrapped
+
+def CTRLC():
+    signal.SIGINT

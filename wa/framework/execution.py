@@ -595,8 +595,9 @@ class Runner(object):
 
         job.configure_augmentations(context, self.pm)
 
-        with signal.wrap('JOB_TARGET_CONFIG', self, context):
-            job.configure_target(context)
+        #JN Todo put a switch here
+        #with signal.wrap('JOB_TARGET_CONFIG', self, context):
+        #    job.configure_target(context)
 
         try:
             job.setup(context)

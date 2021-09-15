@@ -115,10 +115,11 @@ class AndroidAssistant(object):
         if self.logcat_poll_period:
             self.logcat_poller = LogcatPoller(self.target, self.logcat_poll_period)
             self.logcat_poller.start()
-        else:
-            if not self._logcat_marker_msg:
-                self._logcat_marker_msg = 'WA logcat marker for wrap detection'
-                self._logcat_marker_tag = 'WAlog'
+        #JN causes troubles
+        #else:
+        #    if not self._logcat_marker_msg:
+        #        self._logcat_marker_msg = 'WA logcat marker for wrap detection'
+        #        self._logcat_marker_tag = 'WAlog'
 
     def stop(self):
         if self.logcat_poller:
